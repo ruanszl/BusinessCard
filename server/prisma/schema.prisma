@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  uid       String
+  picture   String?
+  email     String?
+  phone     String?
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  BusinessCard BusinessCard[]
+}
+
+model BusinessCard {
+  id        String  @id @default(cuid())
+  youtube   String?
+  twitter   String?
+  facebook  String?
+  instagram String?
+  github    String?
+  linkedin  String?
+  site      String?
+
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
